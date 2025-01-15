@@ -1,0 +1,33 @@
+
+Define Game class{
+
+    Receive players name from Player class 
+    Execute choice function on players
+    Track scores
+    
+
+}
+
+Define Player class{
+    Initialise two players with name and choice
+
+
+    HumanPlayer class extends Player{
+        Function choice()
+            define choice option
+            ask player for choice 
+            define Userinput
+            set choice parameter to Userinput
+        
+
+        
+
+    }
+
+    ComputerPLayer class extends Player{
+        Function choice()
+            define array of choices = ["Rock","Paper","Scissors"]
+            set random choice from choices
+
+    }
+}
