@@ -1,13 +1,9 @@
-const inquirer = require('inquirer');
+const prompt = require("prompt-sync")();
  
 class Player {
     constructor(name) {
         this.name = name;
         this.choice = null;
-    }
- 
-    pickChoice() {
-        console.log("wrong choice");
     }
 }
  
@@ -16,70 +12,73 @@ class HumanPlayer extends Player {
         super(name);
     }
  
-    async pickChoice() {
+    pickChoice() {
         const options = ['rock', 'paper', 'scissors'];
-    
-        const prompt = inquirer.createPromptModule();
+        let userChoice = prompt("Enter your choice (rock, paper, or scissors): ").toLowerCase();
  
-        let userChoice = await prompt({
-            type: 'list',
-            name: 'choice',
-            message: 'Enter your choice (rock, paper, or scissors):',
-            choices: options
-        });
+        while (!options.includes(userChoice)) {
+            console.log("Invalid choice. Please choose rock, paper, or scissors.");
+            userChoice = prompt("Enter your choice (rock, paper, or scissors): ").toLowerCase();
+        }
  
-        this.choice = userChoice.choice;
+        this.choice = userChoice;
     }
 }
  
-class ComputerPlayer extends Player{
-    constructor(name){
-        super(name)
+class ComputerPlayer extends Player {
+    constructor(name) {
+        super(name);
     }
-
-     pickChoice(){
+ 
+    pickChoice() {
         const options = ['rock', 'paper', 'scissors'];
-        this.choice = options[Math.floor(Math.random()*options.length)]
-        console.log("The computer choose " + this.choice)
-       
+        this.choice = options[Math.floor(Math.random() * options.length)];
+    }
+}
+ 
+class Game {
+    constructor(human, computer) {
+        this.human = human;
+        this.computer = computer;
+    }
+ 
+    play() {
+        let continuePlay = true;
+        while(continuePlay == true){
+            this.human.pickChoice();
+            this.computer.pickChoice();
+            this.compare();
+
+            const stopPlay = prompt("Do you want to keep playing?").toLowerCase()
+            if(stopPlay == "no"){
+                continuePlay = false
+            }
+        }
+    }
+ 
+    compare() {
+        const humanChoice = this.human.choice;
+        const computerChoice = this.computer.choice;
+ 
+        console.log(`You chose: ${humanChoice}`);
+        console.log(`Computer chose: ${computerChoice}`);
+ 
+        if (humanChoice === computerChoice) {
+            console.log("It's a tie!");
+        } else if (
+            (humanChoice === "rock" && computerChoice === "scissors") ||
+            (humanChoice === "scissors" && computerChoice === "paper") ||
+            (humanChoice === "paper" && computerChoice === "rock")
+        ) {
+            console.log("You win!");
+        } else {
+            console.log("You lose!");
+        }
     }
 }
 
 
-class Game{
-    constructor(human,computer){
-        this.human = human
-        this.computer = computer
-    }
-    play(){
-        game1.pickChoice().then(() => {
-            game2.pickChoice()
-            this.compare()
-            });
-    }
-
-    compare(){
-
-        if(this.human.pickChoice() === this.computer.pickChoice()){
-            console.log("It is a tie")
-        }
-        else if(this.human.pickChoice() === "rock" &&this.computer.pickChoice()==="paper"){
-            console.log("You lose")
-        }
-        else if(this.human.pickChoice() === "paper" &&this.computer.pickChoice()==="scissors"){
-            console.log("You lose")
-        }
-        else if(this.human.pickChoice() === "scissors" &&this.computer.pickChoice()==="rock"){
-            console.log("You lose")
-        }else{
-            console.log("You win")
-        }
-    }
-}
-
-
-const game1 = new HumanPlayer("Mark");
-const game2 = new ComputerPlayer("Computer")
-
-const game = new Game(game1, game2)
-game.play()
+const humanPlayer = new HumanPlayer("Mark");
+const computerPlayer = new ComputerPlayer("Computer");
+const game = new Game(humanPlayer, computerPlayer);
+game.play();
