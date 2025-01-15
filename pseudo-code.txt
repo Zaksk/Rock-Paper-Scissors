@@ -3,6 +3,7 @@ Define Game class{
 
     Receive players name from Player class 
     Execute choice function on players
+    Declare a winner
     Track scores
     
 
