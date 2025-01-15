@@ -37,16 +37,49 @@ class ComputerPlayer extends Player{
         super(name)
     }
 
-    pickChoice(){
+     pickChoice(){
         const options = ['rock', 'paper', 'scissors'];
         this.choice = options[Math.floor(Math.random()*options.length)]
-        console.log("The computer choose " + this.options)
+        console.log("The computer choose " + this.choice)
        
     }
 }
+
+
+class Game{
+    constructor(human,computer){
+        this.human = human
+        this.computer = computer
+    }
+    play(){
+        game1.pickChoice().then(() => {
+            game2.pickChoice()
+            this.compare()
+            });
+    }
+
+    compare(){
+
+        if(this.human.pickChoice() === this.computer.pickChoice()){
+            console.log("It is a tie")
+        }
+        else if(this.human.pickChoice() === "rock" &&this.computer.pickChoice()==="paper"){
+            console.log("You lose")
+        }
+        else if(this.human.pickChoice() === "paper" &&this.computer.pickChoice()==="scissors"){
+            console.log("You lose")
+        }
+        else if(this.human.pickChoice() === "scissors" &&this.computer.pickChoice()==="rock"){
+            console.log("You lose")
+        }else{
+            console.log("You win")
+        }
+    }
+}
+
+
 const game1 = new HumanPlayer("Mark");
- const game2 = new ComputerPlayer("Computer")
-game1.pickChoice().then(() => {
-    console.log(game1);
-});
-game2.pickChoice()
+const game2 = new ComputerPlayer("Computer")
+
+const game = new Game(game1, game2)
+game.play()
